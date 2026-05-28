@@ -53,6 +53,6 @@ public class DroneAereo extends EntidadeEspacial implements Monitoravel {
     public String gerarRelatorio() {return null;}
 
     // Métodos erdados da Interface
-    public double Monitoravel() {return 0;}
+    public String obterStatus(){return null;}
 
 }

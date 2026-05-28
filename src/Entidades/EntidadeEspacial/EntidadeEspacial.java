@@ -3,7 +3,6 @@ package Entidades.EntidadeEspacial;
 public abstract class EntidadeEspacial {
 
     /*
-
         Foi criada para aplicar herança e reutilização de código.
 
         Todas as entidades possuem:
@@ -18,7 +17,6 @@ public abstract class EntidadeEspacial {
         Responsabilidade:
         -Representar qualquer entidade participante da missão espacial e
         centralizar os atributos e comportamentos comuns entre todas as entidades.
-
      */
 
     private int id;

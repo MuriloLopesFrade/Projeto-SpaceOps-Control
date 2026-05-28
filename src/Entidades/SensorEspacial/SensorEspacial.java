@@ -45,11 +45,16 @@ public class SensorEspacial extends EntidadeEspacial implements Monitoravel, Cal
         this.temperatura = temperatura;
     }
 
-    public double calcularRiscoAmbiental(){return 0;}
+    public double calcularRiscoAmbiental(){
+        /*
+            Calcula o risco ambiental da região monitorada.
+         */
+        return 0;
+    }
 
     public double calcularDesempenho() {return 0;}
     public String gerarRelatorio() {return null;}
 
-    public double CalculavelIPO() {return 0;}
-    public double Monitoravel() {return 0;}
+    public double fornecerIndice(){return 0;}
+    public String obterStatus(){return null;}
 }

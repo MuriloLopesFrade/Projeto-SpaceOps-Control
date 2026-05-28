@@ -59,9 +59,9 @@ public class RoboEspacial extends RoboExplorador implements Monitoravel, Calcula
 
     // Métodos erdados das Interfaces
 
-    public double CalculavelIPO() {return 0;}
+    public double fornecerIndice(){return 0;}
 
-    public double Monitoravel() {return 0;}
+    public String obterStatus(){return null;}
 
     // Método específico da classe
     public double calcularEstabilidadeOrbital(){

@@ -72,10 +72,8 @@ public class RoboTerrestre extends RoboExplorador implements Monitoravel, Calcul
 
     // Métodos erdados das Interfaces
 
-    public double Monitoravel(){
-        return 0;
-    }
-    public double CalculavelIPO(){return 0;}
+    public String obterStatus(){return null;}
+    public double fornecerIndice(){return 0;}
 
 
 
