@@ -3,7 +3,7 @@ package Entidades.EntidadeEspacial;
 public abstract class EntidadeEspacial {
 
     /*
-        Foi criada para aplicar herança e reutilização de código.
+        Foi criada para aplicar herança e evitar repetição de código nas subclasses
 
         Todas as entidades possuem:
 
@@ -12,8 +12,6 @@ public abstract class EntidadeEspacial {
         - status;
         - capacidade de gerar relatórios.
 
-        Isso evita repetição de código nas subclasses.
-
         Responsabilidade:
         -Representar qualquer entidade participante da missão espacial e
         centralizar os atributos e comportamentos comuns entre todas as entidades.
@@ -21,12 +19,10 @@ public abstract class EntidadeEspacial {
 
     private int id;
     private String nome;
-    private String status;
 
-    public EntidadeEspacial(int id, String nome, String status) {
+    public EntidadeEspacial(int id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.status = status;
     }
 
     public int getId() {
@@ -37,9 +33,6 @@ public abstract class EntidadeEspacial {
         return nome;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -49,11 +42,19 @@ public abstract class EntidadeEspacial {
         this.nome = nome;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+
+    public String toString() {
+
+        String aux ="";
+
+        aux += "Identificador: "+ id + "\n";
+        aux += "Nome: "+ nome + "\n";
+
+        return aux;
     }
 
-    public abstract double calcularDesempenho();
     public abstract String gerarRelatorio();
+    public abstract String obterStatus();
+
 
 }

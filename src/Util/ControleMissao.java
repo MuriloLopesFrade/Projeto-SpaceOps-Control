@@ -23,9 +23,14 @@ public class ControleMissao {
     private ArrayList<EventoSistema> eventos;
 
     public void cadastrarEntidade(){}
+
     public void listarEntidades(){}
+
     public void registrarEvento(){}
+
     public void calcularIPO(){}
+
     public void gerarRelatorioGeral(){}
+
 
 }

@@ -18,8 +18,8 @@ public abstract class RoboExplorador extends EntidadeEspacial {
     private double nivelBateria;
     private double velocidade;
 
-    public RoboExplorador(int id, String nome, String status, double nivelBateria, double velocidade) {
-        super(id, nome, status);
+    public RoboExplorador(int id, String nome, double nivelBateria, double velocidade) {
+        super(id, nome);
         this.nivelBateria = nivelBateria;
         this.velocidade = velocidade;
     }
@@ -40,8 +40,10 @@ public abstract class RoboExplorador extends EntidadeEspacial {
         this.velocidade = velocidade;
     }
 
-    public abstract double calcularDesempenho();
+    public abstract void atualizarBateria();
 
     public abstract String gerarRelatorio();
+
+    public abstract String obterStatus();
 
 }

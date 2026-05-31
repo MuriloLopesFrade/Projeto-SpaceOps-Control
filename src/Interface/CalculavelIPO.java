@@ -9,5 +9,5 @@ public interface CalculavelIPO {
         Justificativa:
         -Permite calcular o IPO polimorficamente sem depender do tipo exato da entidade.
      */
-    public double fornecerIndice();
+    public double fornecerIndiceIPO();
 }

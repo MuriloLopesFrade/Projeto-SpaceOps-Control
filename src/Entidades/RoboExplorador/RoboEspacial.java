@@ -1,9 +1,8 @@
 package Entidades.RoboExplorador;
 
 import Interface.CalculavelIPO;
-import Interface.Monitoravel;
 
-public class RoboEspacial extends RoboExplorador implements Monitoravel, CalculavelIPO {
+public class RoboEspacial extends RoboExplorador implements CalculavelIPO {
 
     /*
 
@@ -21,8 +20,8 @@ public class RoboEspacial extends RoboExplorador implements Monitoravel, Calcula
     private double combustivel;
     private double nivelRadiacao;
 
-    public RoboEspacial(int id, String nome, String status, double nivelBateria, double velocidade, double altitudeOrbital, double combustivel, double nivelRadiacao) {
-        super(id, nome, status, nivelBateria, velocidade);
+    public RoboEspacial(int id, String nome, double nivelBateria, double velocidade, double altitudeOrbital, double combustivel, double nivelRadiacao) {
+        super(id, nome, nivelBateria, velocidade);
         this.altitudeOrbital = altitudeOrbital;
         this.combustivel = combustivel;
         this.nivelRadiacao = nivelRadiacao;
@@ -52,17 +51,6 @@ public class RoboEspacial extends RoboExplorador implements Monitoravel, Calcula
         this.nivelRadiacao = nivelRadiacao;
     }
 
-    // Métodos erdados da SuperClasse
-    public double calcularDesempenho() {return 0;}
-
-    public String gerarRelatorio() {return null;}
-
-    // Métodos erdados das Interfaces
-
-    public double fornecerIndice(){return 0;}
-
-    public String obterStatus(){return null;}
-
     // Método específico da classe
     public double calcularEstabilidadeOrbital(){
 
@@ -76,5 +64,19 @@ public class RoboEspacial extends RoboExplorador implements Monitoravel, Calcula
 
         return 0;
     }
+
+    public void atualizarBateria(){}
+
+    // Métodos erdados da SuperClasse
+    public String gerarRelatorio() {return null;}
+
+    public String obterStatus(){return null;}
+
+    // Métodos erdados das Interfaces
+
+    public double fornecerIndiceIPO(){return 0;}
+
+
+
 
 }

@@ -26,7 +26,38 @@ public class EventoSistema {
         this.impacto = impacto;
     }
 
+    public String getDataHora() {
+        return dataHora;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public int getImpacto() {
+        return impacto;
+    }
+
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setImpacto(int impacto) {
+        this.impacto = impacto;
+    }
+
     public String gerarResumoEvento(){
-        return null;
+
+        String aux = "==== Evento do Sistema ====\n";
+
+        aux += "Data/Hora: "+ dataHora+"\n";
+        aux += "Impacto: "+ impacto+"\n";
+        aux += "Descrição: "+ descricao+"\n";
+
+        return aux;
     }
 }

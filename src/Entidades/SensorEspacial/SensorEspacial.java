@@ -2,9 +2,8 @@ package Entidades.SensorEspacial;
 
 import Entidades.EntidadeEspacial.EntidadeEspacial;
 import Interface.CalculavelIPO;
-import Interface.Monitoravel;
 
-public class SensorEspacial extends EntidadeEspacial implements Monitoravel, CalculavelIPO {
+public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
 
     /*
         Representa sensores utilizados para monitoramento ambiental.
@@ -14,8 +13,8 @@ public class SensorEspacial extends EntidadeEspacial implements Monitoravel, Cal
     private double radiacao;
     private double pressaoAtmosferica;
 
-    public SensorEspacial(int id, String nome, String status, double pressaoAtmosferica, double radiacao, double temperatura) {
-        super(id, nome, status);
+    public SensorEspacial(int id, String nome, double pressaoAtmosferica, double radiacao, double temperatura) {
+        super(id, nome);
         this.pressaoAtmosferica = pressaoAtmosferica;
         this.radiacao = radiacao;
         this.temperatura = temperatura;
@@ -52,9 +51,8 @@ public class SensorEspacial extends EntidadeEspacial implements Monitoravel, Cal
         return 0;
     }
 
-    public double calcularDesempenho() {return 0;}
     public String gerarRelatorio() {return null;}
+    public String obterStatus() {return null;}
 
-    public double fornecerIndice(){return 0;}
-    public String obterStatus(){return null;}
+    public double fornecerIndiceIPO(){return 0;}
 }

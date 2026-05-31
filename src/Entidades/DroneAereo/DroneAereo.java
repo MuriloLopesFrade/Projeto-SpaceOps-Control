@@ -1,9 +1,8 @@
 package Entidades.DroneAereo;
 
 import Entidades.EntidadeEspacial.EntidadeEspacial;
-import Interface.Monitoravel;
 
-public class DroneAereo extends EntidadeEspacial implements Monitoravel {
+public class DroneAereo extends EntidadeEspacial {
 
     /*
         Representa drones utilizados para reconhecimento aéreo.
@@ -13,8 +12,8 @@ public class DroneAereo extends EntidadeEspacial implements Monitoravel {
     private double areaMapeada;
     private double autonomiaVoo;
 
-    public DroneAereo(int id, String nome, String status, double altitudeMaxima, double areaMapeada, double autonomiaVoo) {
-        super(id, nome, status);
+    public DroneAereo(int id, String nome, double altitudeMaxima, double areaMapeada, double autonomiaVoo) {
+        super(id, nome);
         this.altitudeMaxima = altitudeMaxima;
         this.areaMapeada = areaMapeada;
         this.autonomiaVoo = autonomiaVoo;
@@ -45,14 +44,44 @@ public class DroneAereo extends EntidadeEspacial implements Monitoravel {
     }
 
     // Método específico da classe
-    public double calcularCoberturaAerea(){return 0;}
+    public double calcularCoberturaAerea(){
+        return areaMapeada * (1+altitudeMaxima / 1000);
+    }
 
+    public double calcularutonomiaFinalVoo(){
+
+        double consumoAltitude = altitudeMaxima * 0.5;
+
+        double consumoMapeamento =  calcularCoberturaAerea() * 0.2;
+
+        return autonomiaVoo - consumoAltitude - consumoMapeamento;
+    }
     // Métodos erdados da SuperClasse
-    public double calcularDesempenho() {return 0;}
+    public String obterStatus() {
 
-    public String gerarRelatorio() {return null;}
+        String status;
 
-    // Métodos erdados da Interface
-    public String obterStatus(){return null;}
+        if (calcularutonomiaFinalVoo() >= (autonomiaVoo*0.6)){
+            status ="Operacional";
+        } else if (calcularutonomiaFinalVoo() >=(autonomiaVoo*0.3)) {
+            status ="Atenção";
+        } else {
+            status = "Crítico";
+        }
+
+        return status;
+    }
+
+    public String gerarRelatorio() {
+
+        String aux = "======== Relatorio Drone Aereo ========\n";
+        aux += toString();
+        aux += "Altitude Maxima: "+altitudeMaxima+"\n";
+        aux += "areaMapeada: "+areaMapeada+"\n";
+        aux += "autonomiaVoo: "+autonomiaVoo+"\n";
+        aux += "autonomiaVoo: "+calcularutonomiaFinalVoo()+"\n";
+
+        return aux;
+    }
 
 }
