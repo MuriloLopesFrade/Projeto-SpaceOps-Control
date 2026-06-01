@@ -85,7 +85,7 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO {
 
         if (calcularEficienciaEnergetica()>= 80){
             status = "Operação efetiva";
-        } else if (calcularEficienciaEnergetica() >= 50) {
+        } else if (calcularEficienciaEnergetica() >= 30) {
             status = "Atenção";
         }else {
             status = "Crítico";
@@ -99,10 +99,10 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO {
         String aux= "==== Estação de Energia ====\n";
         aux += toString();
         aux += "Energia Gerada: "+energiaGerada+"\n";
-        aux += "Rendimento Sistema: "+rendimentoSistema+"\n";
+        aux += "Rendimento Sistema: "+rendimentoSistema+"%\n";
         aux += "Consumo da esatão: "+consumoAtual+"\n";
-        aux += "Eficiencia: "+calcularEficienciaEnergetica()+"\n";
-        aux += "Indice IPO: "+fornecerIndiceIPO()+"\n";
+        aux += "Eficiencia: "+calcularEficienciaEnergetica()+"%\n";
+        aux += "Indice IPO: "+fornecerIndiceIPO()+"%\n";
         aux += "Status: "+obterStatus()+"\n";
 
 

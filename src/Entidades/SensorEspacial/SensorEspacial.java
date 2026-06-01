@@ -51,8 +51,24 @@ public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
         return 0;
     }
 
-    public String gerarRelatorio() {return null;}
     public String obterStatus() {return null;}
 
     public double fornecerIndiceIPO(){return 0;}
+
+    public String gerarRelatorio() {
+
+        String aux= "==== Sensor Espacial ====\n";
+
+        aux+=toString();
+        aux+= "Status: "+ obterStatus()+"\n";
+        aux+= "Indice IPO: "+fornecerIndiceIPO()+"\n";
+        aux+= "=> Dados do Sensor:\n";
+        aux+= "Presão atmosferica: "+ pressaoAtmosferica+"\n";
+        aux+= "temperatura: "+ temperatura+"\n";
+        aux+= "radiacao: "+ radiacao+"\n";
+        aux+= "Risco ambiental: "+ calcularRiscoAmbiental()+"\n";
+
+
+        return aux;
+    }
 }

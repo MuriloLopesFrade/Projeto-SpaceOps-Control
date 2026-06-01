@@ -48,7 +48,7 @@ public class DroneAereo extends EntidadeEspacial {
         return areaMapeada * (1+altitudeMaxima / 1000);
     }
 
-    public double calcularutonomiaFinalVoo(){
+    public double calcularAutonomiaFinalVoo(){
 
         double consumoAltitude = altitudeMaxima * 0.5;
 
@@ -61,9 +61,9 @@ public class DroneAereo extends EntidadeEspacial {
 
         String status;
 
-        if (calcularutonomiaFinalVoo() >= (autonomiaVoo*0.6)){
+        if (calcularAutonomiaFinalVoo() >= (autonomiaVoo*0.7)){
             status ="Operacional";
-        } else if (calcularutonomiaFinalVoo() >=(autonomiaVoo*0.3)) {
+        } else if (calcularAutonomiaFinalVoo() >=(autonomiaVoo*0.3)) {
             status ="Atenção";
         } else {
             status = "Crítico";
@@ -79,7 +79,7 @@ public class DroneAereo extends EntidadeEspacial {
         aux += "Altitude Maxima: "+altitudeMaxima+"\n";
         aux += "areaMapeada: "+areaMapeada+"\n";
         aux += "autonomiaVoo: "+autonomiaVoo+"\n";
-        aux += "autonomiaVoo: "+calcularutonomiaFinalVoo()+"\n";
+        aux += "autonomiaVoo: "+calcularAutonomiaFinalVoo()+"\n";
 
         return aux;
     }
