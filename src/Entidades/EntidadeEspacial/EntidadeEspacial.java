@@ -56,5 +56,4 @@ public abstract class EntidadeEspacial {
     public abstract String gerarRelatorio();
     public abstract String obterStatus();
 
-
 }

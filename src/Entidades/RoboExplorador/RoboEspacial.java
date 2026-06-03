@@ -1,8 +1,9 @@
 package Entidades.RoboExplorador;
 
+import Interface.AvaliadorRisco;
 import Interface.CalculavelIPO;
 
-public class RoboEspacial extends RoboExplorador implements CalculavelIPO {
+public class RoboEspacial extends RoboExplorador implements CalculavelIPO, AvaliadorRisco {
 
     /*
 
@@ -76,7 +77,7 @@ public class RoboEspacial extends RoboExplorador implements CalculavelIPO {
 
     public double fornecerIndiceIPO(){return 0;}
 
-
+    public double calcularRisco(){return 0;}
 
 
 }

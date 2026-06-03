@@ -1,8 +1,9 @@
 package Entidades.RoboExplorador;
 
+import Interface.AvaliadorRisco;
 import Interface.CalculavelIPO;
 
-public class RoboTerrestre extends RoboExplorador implements CalculavelIPO {
+public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, AvaliadorRisco {
 
     /*
         Classe feita para representar robôs responsáveis pela exploração da superfície planetária.
@@ -95,7 +96,7 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO {
     public String obterStatus(){
 
         if (getNivelBateria() >= 70) {
-        return "OPERACIONAL";
+        return "OPERAVEL";
         }
 
         if (getNivelBateria() >= 30) {
@@ -109,8 +110,9 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO {
 
     public String gerarRelatorio(){
 
-        String aux = "";
+        String aux = "==== Robô Terrestre ====\n";
 
+        aux += super.toString();
         aux += "Distancia percorrida: "+ distanciaPercorrida+"\n";
         aux += "Inclinacao suportada: "+ inclinacaoSuportada+"\n";
         aux += "temperatura do Solo: "+ temperaturaSolo+"\n";
@@ -124,5 +126,7 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO {
     // Métodos erdados das Interfaces
 
     public double fornecerIndiceIPO(){return 0;}
+
+    public double calcularRisco(){return 0;}
 
 }

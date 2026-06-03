@@ -1,8 +1,9 @@
 package Entidades.DroneAereo;
 
 import Entidades.EntidadeEspacial.EntidadeEspacial;
+import Interface.AvaliadorRisco;
 
-public class DroneAereo extends EntidadeEspacial {
+public class DroneAereo extends EntidadeEspacial implements AvaliadorRisco {
 
     /*
         Representa drones utilizados para reconhecimento aéreo.
@@ -56,6 +57,12 @@ public class DroneAereo extends EntidadeEspacial {
 
         return autonomiaVoo - consumoAltitude - consumoMapeamento;
     }
+
+    // Método de interface
+    public double calcularRisco(){
+        return ((100-calcularAutonomiaFinalVoo())*0.7) + (calcularCoberturaAerea()*0.3);
+    }
+
     // Métodos erdados da SuperClasse
     public String obterStatus() {
 
@@ -75,7 +82,7 @@ public class DroneAereo extends EntidadeEspacial {
     public String gerarRelatorio() {
 
         String aux = "======== Relatorio Drone Aereo ========\n";
-        aux += toString();
+        aux += super.toString();
         aux += "Altitude Maxima: "+altitudeMaxima+"\n";
         aux += "areaMapeada: "+areaMapeada+"\n";
         aux += "autonomiaVoo: "+autonomiaVoo+"\n";

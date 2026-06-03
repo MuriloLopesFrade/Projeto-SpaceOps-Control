@@ -1,9 +1,10 @@
 package Entidades.EstacaoEnergia;
 
 import Entidades.EntidadeEspacial.EntidadeEspacial;
+import Interface.AvaliadorRisco;
 import Interface.CalculavelIPO;
 
-public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO {
+public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, AvaliadorRisco {
 
     /*
         Representa estações responsáveis pelo fornecimento energético da missão.
@@ -77,6 +78,10 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO {
         return (indiceEnergia*0.15)+(rendimentoSistema*0.15)+(indiceConsumo*0.25)+ (calcularEficienciaEnergetica()*0.45);
     }
 
+    public double calcularRisco(){
+        return 0;
+    }
+
     // Métodos erdados da SuperClasse
 
     public String obterStatus() {
@@ -97,7 +102,7 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO {
     public String gerarRelatorio() {
 
         String aux= "==== Estação de Energia ====\n";
-        aux += toString();
+        aux += super.toString();
         aux += "Energia Gerada: "+energiaGerada+"\n";
         aux += "Rendimento Sistema: "+rendimentoSistema+"%\n";
         aux += "Consumo da esatão: "+consumoAtual+"\n";

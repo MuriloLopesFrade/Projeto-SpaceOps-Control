@@ -47,21 +47,51 @@ public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
     public double calcularRiscoAmbiental(){
         /*
             Calcula o risco ambiental da região monitorada.
+
+            Lógica:
+            -Risco calculado apartir da relevancia de cada atributo
+            -Sendo eles: temperatura(30%),radiacao(50%) e pressaoAtmosferica(20%)
          */
-        return 0;
+
+        double riscoTemperatura = temperatura*0.3;
+        double riscoRadiacao = radiacao*0.5;
+        double riscoPressao = pressaoAtmosferica*0.2;
+
+        return riscoTemperatura + riscoRadiacao + riscoPressao;
     }
 
-    public String obterStatus() {return null;}
+    public double fornecerIndiceIPO(){
 
-    public double fornecerIndiceIPO(){return 0;}
+        double risco = calcularRiscoAmbiental();
+
+        double ipo = 100-risco;
+
+        if (ipo<0){
+            ipo = 0;
+        }
+
+        return ipo;
+    }
+
+    public String obterStatus() {
+
+        double ipo= fornecerIndiceIPO();
+
+        if (ipo>=70){
+            return "OPERACIONAL";
+        } else if (ipo>=40) {
+            return "Atenção";
+        }
+
+        return "CRÍTICO";}
 
     public String gerarRelatorio() {
 
         String aux= "==== Sensor Espacial ====\n";
 
-        aux+=toString();
+        aux+= super.toString();
         aux+= "Status: "+ obterStatus()+"\n";
-        aux+= "Indice IPO: "+fornecerIndiceIPO()+"\n";
+        aux+= "Indice IPO: "+fornecerIndiceIPO()+"%\n";
         aux+= "=> Dados do Sensor:\n";
         aux+= "Presão atmosferica: "+ pressaoAtmosferica+"\n";
         aux+= "temperatura: "+ temperatura+"\n";
