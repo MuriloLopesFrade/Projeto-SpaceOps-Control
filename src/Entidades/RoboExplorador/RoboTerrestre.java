@@ -10,73 +10,69 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
      */
 
     private double distanciaPercorrida;
-    private double inclinacaoSuportada;
-    private double temperaturaSolo;
+    private double desgasteEsteiras;
+    private double inclinacaoAtual;
+    private double areaExplorada;
 
-    public RoboTerrestre(int id, String nome, double nivelBateria, double velocidade, double distanciaPercorrida, double inclinacaoSuportada, double temperaturaSolo) {
+    public RoboTerrestre(int id, String nome, double nivelBateria, double velocidade, double distanciaPercorrida, double desgasteEsteiras, double inclinacaoAtual, double areaExplorada) {
         super(id, nome, nivelBateria, velocidade);
         this.distanciaPercorrida = distanciaPercorrida;
-        this.inclinacaoSuportada = inclinacaoSuportada;
-        this.temperaturaSolo = temperaturaSolo;
+        this.desgasteEsteiras = desgasteEsteiras;
+        this.inclinacaoAtual = inclinacaoAtual;
+        this.areaExplorada = areaExplorada;
     }
 
     public double getDistanciaPercorrida() {
         return distanciaPercorrida;
     }
 
-    public double getInclinacaoSuportada() {
-        return inclinacaoSuportada;
+    public double getDesgasteEsteiras() {
+        return desgasteEsteiras;
     }
 
-    public double getTemperaturaSolo() {
-        return temperaturaSolo;
+    public double getInclinacaoAtual() {
+        return inclinacaoAtual;
+    }
+
+    public double getAreaExplorada() {
+        return areaExplorada;
     }
 
     public void setDistanciaPercorrida(double distanciaPercorrida) {
         this.distanciaPercorrida = distanciaPercorrida;
     }
 
-    public void setInclinacaoSuportada(double inclinacaoSuportada) {
-        this.inclinacaoSuportada = inclinacaoSuportada;
+    public void setDesgasteEsteiras(double desgasteEsteiras) {
+        this.desgasteEsteiras = desgasteEsteiras;
     }
 
-    public void setTemperaturaSolo(double temperaturaSolo) {
-        this.temperaturaSolo = temperaturaSolo;
+    public void setInclinacaoAtual(double inclinacaoAtual) {
+        this.inclinacaoAtual = inclinacaoAtual;
     }
 
-    // Método específico da classe
-    public double calcularAutonomiaTerreno(double inclinacaoAtual){
+    public void setAreaExplorada(double areaExplorada) {
+        this.areaExplorada = areaExplorada;
+    }
 
-        /*
-            Calcula a autonomia restante considerando:
 
-            - distância percorrida.
-            - bateria;
-            - inclinação do terreno;
+    public double calcularAutonomia(){
 
-            Exemplo de regra:
-
-            -Quanto maior a inclinação do terreno, maior será o consumo de energia.
-         */
-
-        double nivelBateria = getNivelBateria();
-
-        double autonomiaBase = nivelBateria * 10;
-        double desgaste = distanciaPercorrida * 0.1;
+        double autonomiaBase = getNivelBateria() * 10;
+        double desgaste = desgasteEsteiras * 0.2;
         double penalidadeTerreno = inclinacaoAtual * 2;
+        double penalidadeVelocidade = super.getVelocidade() * 0.3;
 
-        double autonomia = autonomiaBase - desgaste - penalidadeTerreno;
-
-        return autonomia;
+        return autonomiaBase - desgaste - penalidadeTerreno -penalidadeVelocidade;
     }
 
-    public void atualizarBateria(double inclinacaoAtual){
+    public void atualizarBateria(){
 
-        double nivelBateria = getNivelBateria();
+        double nivelBateria = super.getNivelBateria();
 
-        double consumoDistancia = distanciaPercorrida * 0.05;
+        double consumoDistancia = distanciaPercorrida * 0.1;
         double consumoInclinacao = inclinacaoAtual * 0.2;
-        double consumoTotal = consumoDistancia + consumoInclinacao;
+        double usoVelicidade = super.getVelocidade() * 0.3;
+        double consumoTotal = consumoDistancia + consumoInclinacao + usoVelicidade;
 
         nivelBateria -= consumoTotal;
 
@@ -87,46 +83,61 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
         setNivelBateria(nivelBateria);
     }
 
-    // Métodos erdados da SuperClasse
-
     public double calcularDesempenho(){
-        return 0;
+        return (areaExplorada*0.6)+((100-desgasteEsteiras)*0.4);
     }
 
     public String obterStatus(){
 
         if (getNivelBateria() >= 70) {
-        return "OPERAVEL";
+        return "Verde";
         }
 
         if (getNivelBateria() >= 30) {
-            return "ATENÇÃO";
+            return "Amarelo";
         }
 
-        return "CRÍTICO";
+        return "Vermelho";
     }
 
-    public void atualizarBateria() {}
+    public double calcularRisco(){
+        return (desgasteEsteiras*0.5)+(inclinacaoAtual*0.3)+((100-getNivelBateria())*0.2);
+    }
+
+    public double fornecerIndiceIPO(){
+
+        /*
+            Criterios a serem utilizados:
+            -calcularAutonomiaTerreno()
+            -calcularDesempenho()
+            -calcularRisco()
+
+            A ideia é somar a os criterios aplicados com os seus devidos pesos aplicados
+         */
+
+        double indiceAutonomia = calcularAutonomia() * 0.3;
+        double indiceDesempenho = calcularDesempenho() * 0.2;
+        double indiceRisco = (100-calcularRisco())*0.5;
+
+        return indiceAutonomia + indiceDesempenho + indiceRisco;
+    }
 
     public String gerarRelatorio(){
 
-        String aux = "==== Robô Terrestre ====\n";
+        String aux = "==== Robô Terrestre: "+ getNome() +"====\n";
 
-        aux += super.toString();
+        aux += "Identificador: "+ getId();
         aux += "Distancia percorrida: "+ distanciaPercorrida+"\n";
-        aux += "Inclinacao suportada: "+ inclinacaoSuportada+"\n";
-        aux += "temperatura do Solo: "+ temperaturaSolo+"\n";
+        aux += "Desgaste de esteiras: "+ desgasteEsteiras+"\n";
+        aux += "Inclinação Atual: "+ inclinacaoAtual+"\n";
+        aux += "Área explorada: "+ areaExplorada+"\n";
+        aux += "Indice IPO: "+fornecerIndiceIPO()+"\n";
+        aux += "Nível Bateria: "+ getNivelBateria()+"\n";
+        aux += "Autonomia Terreno: "+ calcularAutonomia()+"\n";
         aux += "Desempenho: "+ calcularDesempenho()+"\n";
-        aux += "Distancia Percorrida: "+ distanciaPercorrida+"\n";
         aux += "Status: "+ obterStatus() +"\n";
 
         return aux;
     }
-
-    // Métodos erdados das Interfaces
-
-    public double fornecerIndiceIPO(){return 0;}
-
-    public double calcularRisco(){return 0;}
 
 }

@@ -22,7 +22,13 @@ public class ControleMissao {
     private ArrayList<EntidadeEspacial> entidades;
     private ArrayList<EventoSistema> eventos;
 
-    public void cadastrarEntidade(){}
+
+
+
+    public void cadastrarEntidade(){
+
+
+    }
 
     public void listarEntidades(){}
 

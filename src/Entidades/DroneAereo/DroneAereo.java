@@ -44,7 +44,6 @@ public class DroneAereo extends EntidadeEspacial implements AvaliadorRisco {
         this.autonomiaVoo = autonomiaVoo;
     }
 
-    // Método específico da classe
     public double calcularCoberturaAerea(){
         return areaMapeada * (1+altitudeMaxima / 1000);
     }
@@ -58,12 +57,10 @@ public class DroneAereo extends EntidadeEspacial implements AvaliadorRisco {
         return autonomiaVoo - consumoAltitude - consumoMapeamento;
     }
 
-    // Método de interface
     public double calcularRisco(){
         return ((100-calcularAutonomiaFinalVoo())*0.7) + (calcularCoberturaAerea()*0.3);
     }
 
-    // Métodos erdados da SuperClasse
     public String obterStatus() {
 
         String status;
@@ -81,8 +78,8 @@ public class DroneAereo extends EntidadeEspacial implements AvaliadorRisco {
 
     public String gerarRelatorio() {
 
-        String aux = "======== Relatorio Drone Aereo ========\n";
-        aux += super.toString();
+        String aux = "======== Drone Aereo: "+getNome()+"========\n";
+        aux += "Identificador:"+getId()+"\n";
         aux += "Altitude Maxima: "+altitudeMaxima+"\n";
         aux += "areaMapeada: "+areaMapeada+"\n";
         aux += "autonomiaVoo: "+autonomiaVoo+"\n";

@@ -15,8 +15,8 @@ public abstract class RoboExplorador extends EntidadeEspacial {
         cada um possuindo regras próprias de funcionamento e cálculos específicos.
      */
 
-    private double nivelBateria;
-    private double velocidade;
+    protected double nivelBateria;
+    protected double velocidade;
 
     public RoboExplorador(int id, String nome, double nivelBateria, double velocidade) {
         super(id, nome);
@@ -40,7 +40,11 @@ public abstract class RoboExplorador extends EntidadeEspacial {
         this.velocidade = velocidade;
     }
 
+    public abstract double calcularAutonomia();
+
     public abstract void atualizarBateria();
+
+    public abstract double calcularDesempenho();
 
     public abstract String gerarRelatorio();
 

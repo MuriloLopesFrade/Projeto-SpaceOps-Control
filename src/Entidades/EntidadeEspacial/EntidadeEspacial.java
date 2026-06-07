@@ -17,8 +17,8 @@ public abstract class EntidadeEspacial {
         centralizar os atributos e comportamentos comuns entre todas as entidades.
      */
 
-    private int id;
-    private String nome;
+    protected int id;
+    protected String nome;
 
     public EntidadeEspacial(int id, String nome) {
         this.id = id;
@@ -40,17 +40,6 @@ public abstract class EntidadeEspacial {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-
-    public String toString() {
-
-        String aux ="";
-
-        aux += "Identificador: "+ id + "\n";
-        aux += "Nome: "+ nome + "\n";
-
-        return aux;
     }
 
     public abstract String gerarRelatorio();

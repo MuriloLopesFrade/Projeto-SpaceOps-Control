@@ -46,26 +46,13 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
     }
 
     public double calcularEficienciaEnergetica(){
-        /*
-            Calcula o desempenho energético da estação.
-         */
 
         double energiaDisponivel = energiaGerada*(rendimentoSistema/100);
 
         return (energiaDisponivel/consumoAtual)*100;
     }
 
-    // Métodos erdados da Interface
     public double fornecerIndiceIPO(){
-
-        /*
-            Fatores levados em consideração:
-            -energiaGerada;
-            -rendimentoSistema;
-            -consumoAtual;
-            -eficiencia (calculada em calcularEficiênciaEnergetica());
-
-         */
 
         double indiceEnergia =
                 (energiaGerada / 1000) * 100;
@@ -79,37 +66,37 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
     }
 
     public double calcularRisco(){
-        return 0;
+
+        double riscoEficiencia = (100-calcularEficienciaEnergetica())*0.4;
+        double riscoIPO = (100-fornecerIndiceIPO())*0.6;
+
+        return riscoEficiencia + riscoIPO;
     }
 
     // Métodos erdados da SuperClasse
 
     public String obterStatus() {
 
-        String status;
-
-        if (calcularEficienciaEnergetica()>= 80){
-            status = "Operação efetiva";
-        } else if (calcularEficienciaEnergetica() >= 30) {
-            status = "Atenção";
-        }else {
-            status = "Crítico";
+        if (calcularEficienciaEnergetica()>= 80 && calcularRisco() <= 30){
+            return "Verde";
+        } else if (calcularEficienciaEnergetica() >= 30 && calcularRisco() <= 70) {
+            return "Amarelo";
         }
 
-        return status;
+        return "Vermelho";
     }
 
     public String gerarRelatorio() {
 
-        String aux= "==== Estação de Energia ====\n";
-        aux += super.toString();
+        String aux= "==== Estação de Energia"+ getNome() +"====\n";
+        aux += "Identificador: "+ getId() +"\n";
         aux += "Energia Gerada: "+energiaGerada+"\n";
         aux += "Rendimento Sistema: "+rendimentoSistema+"%\n";
-        aux += "Consumo da esatão: "+consumoAtual+"\n";
+        aux += "Consumo da estatão: "+consumoAtual+"\n";
+        aux += "Probabilidade de risco: "+calcularRisco()+"\n";
         aux += "Eficiencia: "+calcularEficienciaEnergetica()+"%\n";
         aux += "Indice IPO: "+fornecerIndiceIPO()+"%\n";
-        aux += "Status: "+obterStatus()+"\n";
-
+        aux += "Status: "+obterStatus();
 
         return aux;
     }
