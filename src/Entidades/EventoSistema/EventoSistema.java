@@ -17,19 +17,15 @@ public class EventoSistema {
      */
 
     private String descricao;
+    private String tipoEvento;
     private String dataHora;
-    private String dispositivo;
-    private int impacto;
 
-    public EventoSistema(String dataHora, String descricao, String dispositivo, int impacto) {
+
+
+    public EventoSistema(String tipoEvento,String dataHora, String descricao) {
+        this.tipoEvento = tipoEvento;
         this.dataHora = dataHora;
         this.descricao = descricao;
-        this.dispositivo = dispositivo;
-        this.impacto = impacto;
-    }
-
-    public String getDispositivo() {
-        return dispositivo;
     }
 
     public String getDataHora() {
@@ -40,24 +36,20 @@ public class EventoSistema {
         return descricao;
     }
 
-    public int getImpacto() {
-        return impacto;
+    public String getTipoEvento() {
+        return tipoEvento;
     }
 
     public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
     }
 
-    public void setDispositivo(String dispositivo) {
-        this.dispositivo = dispositivo;
-    }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    public void setImpacto(int impacto) {
-        this.impacto = impacto;
+    public void setTipoEvento(String tipoEvento) {
+        this.tipoEvento = tipoEvento;
     }
 
     public String gerarResumoEvento(){
@@ -65,9 +57,7 @@ public class EventoSistema {
         String aux = "==== Evento do Sistema ====\n";
 
         aux += "Data/Hora: "+ dataHora+"\n";
-        aux += "Impacto: "+ impacto+"\n";
         aux += "Descrição: "+ descricao+"\n";
-        aux += "Dispositivo: "+ dispositivo+"\n";
 
         return aux;
     }
