@@ -6,13 +6,10 @@ import Interface.CalculavelIPO;
 
 public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, AvaliadorRisco {
 
-    /*
-        Representa estações responsáveis pelo fornecimento energético da missão.
-     */
 
-    private double energiaGerada; // energia produzida pela estação.
-    private double rendimentoSistema; // eficiência dos equipamentos (0 a 100%).
-    private double consumoAtual; // energia que a base está consumindo.
+    private double energiaGerada;
+    private double rendimentoSistema;
+    private double consumoAtual;
 
     public EstacaoEnergia(int id, String nome, double energiaGerada, double rendimentoSistema, double consumoAtual) {
         super(id, nome);
@@ -45,7 +42,11 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
         this.consumoAtual = consumoAtual;
     }
 
-    public double calcularEficienciaEnergetica(){
+    public String toString() {
+        return super.toString() + "Tipo: Estação de Energia\n";
+    }
+
+    public double calcularCapacidadeEnergetica(){
 
         double energiaDisponivel = energiaGerada*(rendimentoSistema/100);
 
@@ -54,20 +55,24 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
 
     public double fornecerIndiceIPO(){
 
-        double indiceEnergia =
-                (energiaGerada / 1000) * 100;
+        double indiceEnergia = (energiaGerada / 1000) * 100;
 
+        if(indiceEnergia<0){
+            indiceEnergia=0;
+        }
 
-        double indiceConsumo =
-                100 - ((consumoAtual / 1000) * 100);
+        double indiceConsumo = 100 - consumoAtual;
 
+        if(indiceConsumo<0){
+            indiceConsumo=0;
+        }
 
-        return (indiceEnergia*0.15)+(rendimentoSistema*0.15)+(indiceConsumo*0.25)+ (calcularEficienciaEnergetica()*0.45);
+        return (indiceEnergia*0.15)+(rendimentoSistema*0.15)+(indiceConsumo*0.25);
     }
 
     public double calcularRisco(){
 
-        double riscoEficiencia = (100-calcularEficienciaEnergetica())*0.4;
+        double riscoEficiencia = calcularCapacidadeEnergetica()*0.4;
         double riscoIPO = (100-fornecerIndiceIPO())*0.6;
 
         return riscoEficiencia + riscoIPO;
@@ -77,9 +82,9 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
 
     public String obterStatus() {
 
-        if (calcularEficienciaEnergetica()>= 80 && calcularRisco() <= 30){
+        if (calcularCapacidadeEnergetica()>consumoAtual){
             return "Verde";
-        } else if (calcularEficienciaEnergetica() >= 30 && calcularRisco() <= 70) {
+        } else if (calcularCapacidadeEnergetica()==consumoAtual) {
             return "Amarelo";
         }
 
@@ -88,15 +93,15 @@ public class EstacaoEnergia extends EntidadeEspacial implements CalculavelIPO, A
 
     public String gerarRelatorio() {
 
-        String aux= "==== Estação de Energia"+ getNome() +"====\n";
+        String aux= "==> Estação de Energia"+ getNome() +"\n";
         aux += "Identificador: "+ getId() +"\n";
         aux += "Energia Gerada: "+energiaGerada+"\n";
         aux += "Rendimento Sistema: "+rendimentoSistema+"%\n";
-        aux += "Consumo da estatão: "+consumoAtual+"\n";
-        aux += "Probabilidade de risco: "+calcularRisco()+"\n";
-        aux += "Eficiencia: "+calcularEficienciaEnergetica()+"%\n";
-        aux += "Indice IPO: "+fornecerIndiceIPO()+"%\n";
-        aux += "Status: "+obterStatus();
+        aux += "Consumo da estatão: "+consumoAtual+"%\n";
+        aux += "Probabilidade de risco: "+String.format("%.2f",calcularRisco())+"%\n";
+        aux += "Capacidade energetica: "+String.format("%.2f",calcularCapacidadeEnergetica())+"%\n";
+        aux += "Indice IPO: "+String.format("%.2f",fornecerIndiceIPO())+"%\n";
+        aux += "Status: "+obterStatus()+"\n";
 
         return aux;
     }

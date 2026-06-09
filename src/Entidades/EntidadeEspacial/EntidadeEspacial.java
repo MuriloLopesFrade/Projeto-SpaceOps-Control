@@ -2,21 +2,6 @@ package Entidades.EntidadeEspacial;
 
 public abstract class EntidadeEspacial {
 
-    /*
-        Foi criada para aplicar herança e evitar repetição de código nas subclasses
-
-        Todas as entidades possuem:
-
-        - identificação;
-        - nome;
-        - status;
-        - capacidade de gerar relatórios.
-
-        Responsabilidade:
-        -Representar qualquer entidade participante da missão espacial e
-        centralizar os atributos e comportamentos comuns entre todas as entidades.
-     */
-
     protected int id;
     protected String nome;
 
@@ -40,6 +25,17 @@ public abstract class EntidadeEspacial {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+
+        String aux="";
+
+        aux +="id: " + id +"\n";
+        aux +="Nome:" + nome + "\n";
+
+        return aux;
     }
 
     public abstract String gerarRelatorio();

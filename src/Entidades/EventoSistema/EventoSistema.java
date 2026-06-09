@@ -1,31 +1,19 @@
 package Entidades.EventoSistema;
 
 public class EventoSistema {
-    /*
-        Representa eventos críticos ocorridos durante a missão.
 
-        Objetivo:
-        -Registrar ocorrências que possam impactar o funcionamento do sistema e o IPO.
-
-        Exemplos de eventos:
-        -tempestade solar;
-        -falha mecânica;
-        -superaquecimento;
-        -perda de sinal;
-        -bateria crítica;
-        -colisão.
-     */
-
+    private String id;
     private String descricao;
     private String tipoEvento;
     private String dataHora;
 
 
 
-    public EventoSistema(String tipoEvento,String dataHora, String descricao) {
+    public EventoSistema(String tipoEvento,String dataHora, String descricao,String id) {
         this.tipoEvento = tipoEvento;
         this.dataHora = dataHora;
         this.descricao = descricao;
+        this.id = id;
     }
 
     public String getDataHora() {
@@ -40,6 +28,10 @@ public class EventoSistema {
         return tipoEvento;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
     }
@@ -52,12 +44,18 @@ public class EventoSistema {
         this.tipoEvento = tipoEvento;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String gerarResumoEvento(){
 
-        String aux = "==== Evento do Sistema ====\n";
+        String aux = "";
 
-        aux += "Data/Hora: "+ dataHora+"\n";
-        aux += "Descrição: "+ descricao+"\n";
+        aux += "Tipo de evento: "+tipoEvento+"\n";
+        aux += "Identificador do Evento: "+id+"\n";
+        aux += "Data/Hora: "+dataHora+"\n";
+        aux += "Descrição: "+descricao+"\n";
 
         return aux;
     }

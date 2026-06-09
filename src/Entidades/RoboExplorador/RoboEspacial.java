@@ -5,14 +5,6 @@ import Interface.CalculavelIPO;
 
 public class RoboEspacial extends RoboExplorador implements CalculavelIPO, AvaliadorRisco {
 
-    /*
-        Representa robôs que operam fora da superfície planetária.
-
-        Exemplos:
-        - robôs orbitais;
-        - satélites autônomos;
-     */
-
     private double combustivel;
     private double nivelRadiacao;
     private double areaMonitorada;
@@ -59,7 +51,10 @@ public class RoboEspacial extends RoboExplorador implements CalculavelIPO, Avali
         this.quantidadeDadosColetados = quantidadeDadosColetados;
     }
 
-    // Método específico da classe
+    public String toString() {
+        return super.toString() + "Tipo: Robô Espacial\n";
+    }
+
     public double calcularRetornoCientifico(){
 
         return (quantidadeDadosColetados * 0.8) + (areaMonitorada * 0.2);
@@ -72,31 +67,31 @@ public class RoboEspacial extends RoboExplorador implements CalculavelIPO, Avali
 
     public double calcularDesempenho(){
 
-        return (areaMonitorada * 0.4) + (quantidadeDadosColetados * 0.6);
-    }
-
-    public  double calcularAutonomia(){
-
-        return (getNivelBateria() * 0.4)+(combustivel*0.6);
+        return ((areaMonitorada/2000)* 0.4) + ((combustivel/100) * 0.6);
     }
 
     public void atualizarBateria(){
 
-        double consumo = (areaMonitorada* 0.02)+(quantidadeDadosColetados*0.03)+(nivelRadiacao*0.01);
+        double consumo = ((areaMonitorada/200)* 0.2)+((quantidadeDadosColetados/500)*0.3)+(nivelRadiacao*0.1);
 
         double novoNivelBateria = getNivelBateria() - consumo;
 
         setNivelBateria(novoNivelBateria);
     }
 
-    public double fornecerIndiceIPO(){
+    public  double calcularAutonomia(){
 
-        return calcularAutonomia()*0.4+ calcularDesempenho()*0.4+ (100-calcularRisco())*0.2;
+        return ((getNivelBateria()/100) * 0.4)+((combustivel/200)*0.6);
     }
 
     public double calcularRisco(){
 
         return ((100-combustivel)*0.4)+ ((100-getNivelBateria())*0.4)+(nivelRadiacao*0.2);
+    }
+
+    public double fornecerIndiceIPO(){
+
+        return ((calcularAutonomia()/100)*0.4)+ ((calcularDesempenho()/100)*0.4)+ ((100-calcularRisco())*0.2);
     }
 
     public String obterStatus(){
@@ -116,19 +111,19 @@ public class RoboEspacial extends RoboExplorador implements CalculavelIPO, Avali
 
         String aux ="";
 
-        aux += "==== Robô Espacial: "+ getNome() + "====\n";
+        aux += "==> Robô Espacial: "+ getNome() + "\n";
         aux += "Identificados: "+ getId() + "\n";
-        aux += "Bateria: "+ getNivelBateria() + "\n";
+        aux += "Bateria: "+ Math.round(getNivelBateria()) + "%\n";
         aux += "Combustivel: "+ combustivel + "%\n";
-        aux += "Radiação: "+ nivelRadiacao + "\n";
+        aux += "Radiação: "+ nivelRadiacao + "Becquerel\n";
         aux += "Área Monitorada: "+ areaMonitorada +"km²\n";
-        aux += "Quantidade de dados coletados: "+ quantidadeDadosColetados + "GB\n";
-        aux += "Desempenho: "+ calcularExposicaoEspacial() + "%\n";
-        aux += "Autonomia: "+ calcularAutonomia() + "%\n";
-        aux += "Risco: "+ calcularRisco() + "%\n";
-        aux += "Retorno Cientifico: "+ calcularRetornoCientifico() + "\n";
-        aux += "Exposicao espacial: "+ calcularExposicaoEspacial() + "\n";
-        aux += "Indice IPO: "+ fornecerIndiceIPO() + "%\n";
+        aux += "Quantidade de dados coletados: "+ quantidadeDadosColetados + "\n";
+        aux += "Desempenho: "+String.format("%.2f",calcularExposicaoEspacial()) + "%\n";
+        aux += "Autonomia: "+ String.format("%.2f",calcularAutonomia()) + "%\n";
+        aux += "Risco: "+ String.format("%.2f",calcularRisco()) + "%\n";
+        aux += "Pontuação de retorno Cientifico: "+ String.format("%.2f", calcularRetornoCientifico()) + "\n";
+        aux += "Índice de exposição espacial: "+ String.format("%.2f", calcularExposicaoEspacial()) + "\n";
+        aux += "Indice IPO: "+ String.format("%.2f", fornecerIndiceIPO()) + "%\n";
         aux += "Status: "+ obterStatus() + "\n";
 
         return aux;

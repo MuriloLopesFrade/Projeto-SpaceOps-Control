@@ -44,46 +44,82 @@ public class DroneAereo extends EntidadeEspacial implements AvaliadorRisco {
         this.autonomiaVoo = autonomiaVoo;
     }
 
+    public String toString() {
+        return super.toString() + "Tipo: Drone Áereo\n";
+    }
+
     public double calcularCoberturaAerea(){
-        return areaMapeada * (1+altitudeMaxima / 1000);
+
+        double cobertura = (areaMapeada / 1000) * 100;
+
+        if (cobertura<0){
+            cobertura=0;
+        }
+
+        if (cobertura>100){
+            cobertura=100;
+        }
+        return cobertura;
     }
 
     public double calcularAutonomiaFinalVoo(){
 
-        double consumoAltitude = altitudeMaxima * 0.5;
+        double consumoAltitude = (altitudeMaxima/2000) * 30;
 
-        double consumoMapeamento =  calcularCoberturaAerea() * 0.2;
+        double consumoMapeamento =  (calcularCoberturaAerea()/1000) * 20;
 
-        return autonomiaVoo - consumoAltitude - consumoMapeamento;
+        double autonomiaFinal =autonomiaVoo - consumoAltitude - consumoMapeamento;
+
+        if (autonomiaFinal<0){
+            autonomiaFinal=0;
+        }
+
+        if (autonomiaFinal>100){
+            autonomiaFinal=100;
+        }
+
+        return autonomiaFinal;
     }
 
     public double calcularRisco(){
-        return ((100-calcularAutonomiaFinalVoo())*0.7) + (calcularCoberturaAerea()*0.3);
+
+        double riscoAutonomia = (100-calcularAutonomiaFinalVoo())*0.4;
+        double riscoCoberturaAerea =  (100-calcularCoberturaAerea())*0.3;
+
+        double ristoTotal= riscoAutonomia+riscoCoberturaAerea;
+
+        if (ristoTotal<0){
+            ristoTotal=0;
+        }
+
+        if (ristoTotal>100){
+            ristoTotal=100;
+        }
+
+        return ristoTotal;
     }
 
     public String obterStatus() {
 
-        String status;
-
-        if (calcularAutonomiaFinalVoo() >= (autonomiaVoo*0.7)){
-            status ="Operacional";
-        } else if (calcularAutonomiaFinalVoo() >=(autonomiaVoo*0.3)) {
-            status ="Atenção";
-        } else {
-            status = "Crítico";
+        if (calcularAutonomiaFinalVoo() >= ((altitudeMaxima/2000)*70)){
+            return"Verde";
+        } else if (calcularAutonomiaFinalVoo() >=((altitudeMaxima/2000)*30)) {
+            return"Amarelo";
         }
 
-        return status;
+        return "Vermeho";
     }
 
     public String gerarRelatorio() {
 
-        String aux = "======== Drone Aereo: "+getNome()+"========\n";
+        String aux = "==> Drone Aereo: "+getNome()+"\n";
         aux += "Identificador:"+getId()+"\n";
-        aux += "Altitude Maxima: "+altitudeMaxima+"\n";
-        aux += "areaMapeada: "+areaMapeada+"\n";
-        aux += "autonomiaVoo: "+autonomiaVoo+"\n";
-        aux += "autonomiaVoo: "+calcularAutonomiaFinalVoo()+"\n";
+        aux += "Altitude máxima: "+altitudeMaxima+"m\n";
+        aux += "Área Mapeada: "+areaMapeada+"km\n";
+        aux += "Autonomia inicial voo: "+autonomiaVoo+"%\n";
+        aux += "Autonomia final voo: "+String.format("%.2f", calcularAutonomiaFinalVoo())+"%\n";
+        aux += "Porcentagem de área coberta: "+String.format("%.2f", calcularCoberturaAerea())+"%\n";
+        aux += "Status: "+ obterStatus()+"\n";
 
         return aux;
     }

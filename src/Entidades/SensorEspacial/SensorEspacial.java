@@ -5,19 +5,15 @@ import Interface.CalculavelIPO;
 
 public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
 
-    /*
-        Representa sensores utilizados para monitoramento ambiental.
-     */
-
     private double temperatura;
     private double radiacao;
     private double pressaoAtmosferica;
 
-    public SensorEspacial(int id, String nome, double pressaoAtmosferica, double radiacao, double temperatura) {
+    public SensorEspacial(int id, String nome, double temperatura, double radiacao, double pressaoAtmosferica) {
         super(id, nome);
-        this.pressaoAtmosferica = pressaoAtmosferica;
-        this.radiacao = radiacao;
         this.temperatura = temperatura;
+        this.radiacao = radiacao;
+        this.pressaoAtmosferica = pressaoAtmosferica;
     }
 
     public double getPressaoAtmosferica() {
@@ -44,23 +40,39 @@ public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
         this.temperatura = temperatura;
     }
 
+    public String toString() {
+        return super.toString() + "Tipo: Sensor Espacial\n";
+    }
+
     public double calcularRiscoAmbiental(){
 
-        double riscoTemperatura = temperatura*0.3;
-        double riscoRadiacao = radiacao*0.5;
-        double riscoPressao = pressaoAtmosferica*0.2;
+        double riscoTemperatura;
 
-        return riscoTemperatura + riscoRadiacao + riscoPressao;
+        if (temperatura >= -20 && temperatura <= 45) {
+            riscoTemperatura = 0;
+        }
+        else if ((temperatura >= -40 && temperatura < -20) || (temperatura > 45 && temperatura <= 60)) {
+            riscoTemperatura = 50;
+        }
+        else {
+            riscoTemperatura = 100;
+        }
+        double riscoRadiacao = radiacao*0.5;
+        double riscoPressao = (1 - pressaoAtmosferica) * 100;;
+
+        return (riscoTemperatura*0.3) + (riscoRadiacao*0.5) + (riscoPressao*0.2);
     }
 
     public double fornecerIndiceIPO(){
 
-        double risco = calcularRiscoAmbiental();
-
-        double ipo = 100-risco;
+        double ipo = (1-(calcularRiscoAmbiental()/100)) *100;
 
         if (ipo<0){
             ipo = 0;
+        }
+
+        if (ipo>100){
+            ipo = 100;
         }
 
         return ipo;
@@ -80,17 +92,15 @@ public class SensorEspacial extends EntidadeEspacial implements CalculavelIPO {
 
     public String gerarRelatorio() {
 
-        String aux= "==== Sensor Espacial: "+getNome()+"====\n";
+        String aux= "==> Sensor Espacial: "+getNome()+"\n";
 
         aux+= "Identificador:"+ getId() +"\n";
-        aux+= "Status: "+ obterStatus()+"\n";
-        aux+= "Indice IPO: "+fornecerIndiceIPO()+"%\n";
-        aux+= "=> Dados do Sensor:\n";
+        aux+= "Indice IPO: "+String.format("%.2f", fornecerIndiceIPO())+"%\n";
         aux+= "Presão atmosferica: "+ pressaoAtmosferica+"\n";
-        aux+= "temperatura: "+ temperatura+"\n";
-        aux+= "radiacao: "+ radiacao+"\n";
-        aux+= "Risco ambiental: "+ calcularRiscoAmbiental()+"\n";
-
+        aux+= "temperatura: "+ temperatura+"°C\n";
+        aux+= "radiacao: "+ radiacao+"%\n";
+        aux+= "Nível de risco ambiental: "+ String.format("%.2f", calcularRiscoAmbiental())+"%\n";
+        aux+= "Status: "+obterStatus()+"\n";
 
         return aux;
     }

@@ -5,10 +5,6 @@ import Interface.CalculavelIPO;
 
 public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, AvaliadorRisco {
 
-    /*
-        Classe feita para representar robôs responsáveis pela exploração da superfície planetária.
-     */
-
     private double distanciaPercorrida;
     private double desgasteEsteiras;
     private double inclinacaoAtual;
@@ -54,24 +50,40 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
         this.areaExplorada = areaExplorada;
     }
 
+    public String toString() {
+        return super.toString() + "Tipo: Robô Terrestre\n";
+    }
+
+    public  double calcularEficienciaExploracao(){
+        return areaExplorada / distanciaPercorrida;
+    }
 
     public double calcularAutonomia(){
 
-        double autonomiaBase = getNivelBateria() * 10;
-        double desgaste = desgasteEsteiras * 0.2;
-        double penalidadeTerreno = inclinacaoAtual * 2;
-        double penalidadeVelocidade = super.getVelocidade() * 0.3;
+        double autonomiaBase = (getNivelBateria()/100) * 0.1;
+        double desgaste = (desgasteEsteiras/100) * 0.2;
+        double penalidadeTerreno = inclinacaoAtual * 0.2;
+        double penalidadeVelocidade = (getVelocidade()/100) * 0.3;
 
-        return autonomiaBase - desgaste - penalidadeTerreno -penalidadeVelocidade;
+        double autonomia = autonomiaBase - desgaste - penalidadeTerreno -penalidadeVelocidade;
+
+        if (autonomia < 0) {
+            autonomia = 0;
+        }
+
+        if (autonomia > 100) {
+            autonomia = 100;
+        }
+        return autonomia;
     }
 
     public void atualizarBateria(){
 
         double nivelBateria = super.getNivelBateria();
 
-        double consumoDistancia = distanciaPercorrida * 0.1;
-        double consumoInclinacao = inclinacaoAtual * 0.2;
-        double usoVelicidade = super.getVelocidade() * 0.3;
+        double consumoDistancia = (distanciaPercorrida/2000) * 0.1;
+        double consumoInclinacao = (inclinacaoAtual/50) * 0.2;
+        double usoVelicidade = (getVelocidade()/100) * 0.3;
         double consumoTotal = consumoDistancia + consumoInclinacao + usoVelicidade;
 
         nivelBateria -= consumoTotal;
@@ -80,11 +92,25 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
             nivelBateria = 0;
         }
 
+        if (nivelBateria > 100) {
+            nivelBateria = 100;
+        }
+
         setNivelBateria(nivelBateria);
     }
 
     public double calcularDesempenho(){
-        return (areaExplorada*0.6)+((100-desgasteEsteiras)*0.4);
+
+        double desempenho = ((areaExplorada/2000)*0.6)+((100-desgasteEsteiras)*0.4);
+
+        if (desempenho < 0) {
+            desempenho = 0;
+        }
+
+        if (desempenho > 100) {
+            desempenho = 100;
+        }
+        return desempenho;
     }
 
     public String obterStatus(){
@@ -101,22 +127,13 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
     }
 
     public double calcularRisco(){
-        return (desgasteEsteiras*0.5)+(inclinacaoAtual*0.3)+((100-getNivelBateria())*0.2);
+        return (desgasteEsteiras*0.5)+((inclinacaoAtual/50)*0.3)+((getNivelBateria())*0.2);
     }
 
     public double fornecerIndiceIPO(){
 
-        /*
-            Criterios a serem utilizados:
-            -calcularAutonomiaTerreno()
-            -calcularDesempenho()
-            -calcularRisco()
-
-            A ideia é somar a os criterios aplicados com os seus devidos pesos aplicados
-         */
-
-        double indiceAutonomia = calcularAutonomia() * 0.3;
-        double indiceDesempenho = calcularDesempenho() * 0.2;
+        double indiceAutonomia = (calcularAutonomia()/100) * 0.3;
+        double indiceDesempenho = (calcularDesempenho()/100) * 0.2;
         double indiceRisco = (100-calcularRisco())*0.5;
 
         return indiceAutonomia + indiceDesempenho + indiceRisco;
@@ -124,17 +141,18 @@ public class RoboTerrestre extends RoboExplorador implements CalculavelIPO, Aval
 
     public String gerarRelatorio(){
 
-        String aux = "==== Robô Terrestre: "+ getNome() +"====\n";
+        String aux = "==> Robô Terrestre: "+ getNome() +"\n";
 
-        aux += "Identificador: "+ getId();
-        aux += "Distancia percorrida: "+ distanciaPercorrida+"\n";
-        aux += "Desgaste de esteiras: "+ desgasteEsteiras+"\n";
-        aux += "Inclinação Atual: "+ inclinacaoAtual+"\n";
+        aux += "Identificador: "+ getId()+"\n";
+        aux += "Distancia percorrida: "+ distanciaPercorrida+"km\n";
+        aux += "Desgaste de esteiras: "+ desgasteEsteiras+"%\n";
+        aux += "Inclinação Atual: "+ inclinacaoAtual+"°\n";
         aux += "Área explorada: "+ areaExplorada+"\n";
-        aux += "Indice IPO: "+fornecerIndiceIPO()+"\n";
-        aux += "Nível Bateria: "+ getNivelBateria()+"\n";
-        aux += "Autonomia Terreno: "+ calcularAutonomia()+"\n";
-        aux += "Desempenho: "+ calcularDesempenho()+"\n";
+        aux += "Indice IPO: "+String.format("%.2f",fornecerIndiceIPO())+"%\n";
+        aux += "Eficiência da exploração: "+String.format("%.2f",calcularEficienciaExploracao())+"%\n";
+        aux += "Nível atual bateria: "+String.format("%.2f",getNivelBateria())+"%\n";
+        aux += "Autonomia Terreno: "+String.format("%.2f",calcularAutonomia())+"%\n";
+        aux += "Desempenho: "+String.format("%.2f",calcularDesempenho())+"%\n";
         aux += "Status: "+ obterStatus() +"\n";
 
         return aux;
